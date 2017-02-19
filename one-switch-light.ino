@@ -17,7 +17,7 @@ bool isPorchLightOn = false; // To track if the light is on or off
 bool areCoachLightsOn = false; // To track if the light is on or off
 bool isBackyardLightOn = false; // To track if the light is on or off
 
-int timer = 0;             // 
+long timer = 0;             // 
 
 void setup()               // It is used to initialize variables, pin modes, etc. The setup function will only run once.
 {
