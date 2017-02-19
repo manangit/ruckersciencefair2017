@@ -3,12 +3,24 @@
   The one switch light project
 */
 
-
 int porchLight = 2;
 int coachLights = 4;
 int backyardLight = 8;
 int switchPin = 12;
 boolean switchState = LOW;
+boolean lastSwitchState = LOW;
+boolean isPorchLightOn = false;
+
+boolean debounce(boolean last)
+{
+  boolean current = digitalRead(switchPin);
+  if (last != current)
+  {
+    delay(5);
+    current = digitalRead(switchPin);
+  }
+  return current;
+}
 
 void setup()
 {
@@ -20,14 +32,11 @@ void setup()
 
 void loop()
 {
-  switchState = digitalRead(switchPin);
-
+  switchState = debounce(lastSwitchState);
   if (switchState == HIGH)
   {
-    digitalWrite(porchLight, HIGH);
+    isPorchLightOn = !isPorchLightOn;
+    digitalWrite(porchLight, isPorchLightOn);
   }
-  else
-  {
-    digitalWrite(porchLight, LOW);
-  }
+  lastSwitchState = !lastSwitchState;
 }
