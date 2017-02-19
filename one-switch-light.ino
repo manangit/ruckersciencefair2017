@@ -1,6 +1,6 @@
 /*
   My Science Fair Project
-  The one switch light project
+  The one switch Smart House
 */
 
 int porchLight = 2;
@@ -10,17 +10,10 @@ int switchPin = 12;
 boolean switchState = LOW;
 boolean lastSwitchState = LOW;
 boolean isPorchLightOn = false;
+boolean isCoachLightOn = false;
+boolean isBackyardLightOn = false;
 
-boolean debounce(boolean last)
-{
-  boolean current = digitalRead(switchPin);
-  if (last != current)
-  {
-    delay(5);
-    current = digitalRead(switchPin);
-  }
-  return current;
-}
+int timer = 0;
 
 void setup()
 {
@@ -28,15 +21,35 @@ void setup()
   pinMode(coachLights, OUTPUT);
   pinMode(backyardLight, OUTPUT);
   pinMode(switchPin, INPUT);
+
 }
 
 void loop()
 {
-  switchState = debounce(lastSwitchState);
-  if (switchState == HIGH)
+  while (digitalRead(switchPin) == HIGH)
+  {
+    delay (100);
+    timer = timer + 100;
+  }
+
+  if (timer > 100 && timer <= 1000)
   {
     isPorchLightOn = !isPorchLightOn;
     digitalWrite(porchLight, isPorchLightOn);
+    timer = 0;
   }
-  lastSwitchState = !lastSwitchState;
+
+  if ( timer > 1000 && timer <= 3000)
+  {
+    isCoachLightOn = !isCoachLightOn;
+    digitalWrite(coachLights, isCoachLightOn);
+    timer = 0;
+  }
+
+  if (timer > 3000)
+  {
+    isBackyardLightOn = !isBackyardLightOn;
+    digitalWrite(backyardLight, isBackyardLightOn);
+    timer = 0;
+  }
 }
